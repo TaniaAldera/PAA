@@ -54,8 +54,8 @@ let itemCounter     = 0;
 let itemsData       = [];
 
 // Standar Taksiran Logam (STL) per gram dalam Rupiah
-const STL_PERHIASAN = 2290196;  // perhiasan & ANTAM & UBS
-const STL_GALERI24  = 2390095;  // emas batangan Galeri 24
+const STL_PERHIASAN = 2322205;  // perhiasan & ANTAM & UBS
+const STL_GALERI24  = 2391871;  // emas batangan Galeri 24
 
 /**
  * Kembalikan nilai STL berdasarkan merek batangan yang dipilih.
@@ -467,16 +467,17 @@ function resetFeedback() {
 
 // Harga emas Galeri 24 per denominasi (Rupiah) — update berkala
 const hargaEmas = {
- 1: 2847000,
- 2: 5625000,
- 5: 13959000,
- 10: 27843000,
- 25: 69232000,
- 50: 138354000,
- 100: 276571000,
- 250: 689728000,
- 500: 1379455000,
- 1000: 2758909000,
+ 0.5: 1488000,
+ 1: 2836000,
+ 2: 5603000,
+ 5: 13906000,
+ 10: 27736000,
+ 25: 68968000,
+ 50: 137826000,
+ 100: 275516000,
+ 250: 687099000,
+ 500: 1374196000,
+ 1000: 2748391000,
 };
 
 let currentMargin    = 0.0092;
