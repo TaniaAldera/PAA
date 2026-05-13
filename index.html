@@ -10,12 +10,8 @@
 </head>
 <body>
 
-<!-- ============================================================
-     HEADER (berubah per halaman)
-     ============================================================ -->
-<header class="site-header" id="siteHeader">
-  <!-- konten header diisi via JS -->
-</header>
+<!-- HEADER -->
+<header class="site-header" id="siteHeader"></header>
 
 <!-- ============================================================
      PAGE: INDEX
@@ -88,9 +84,27 @@
         <h3>Krasida (Kredit Gadai Sistem Angsuran)</h3>
         <p>Solusi cicilan tetap bulanan untuk modal usaha atau investasi.</p>
       </div>
+
+      <!-- ★ NEW: Tombol buka panel perbandingan ★ -->
+      <button class="compare-trigger" onclick="toggleCompare()">
+        <span>⚖️ Bandingkan Ketiga Produk</span>
+        <span id="compareTriggerChevron" class="chevron-icon">▼</span>
+      </button>
+
+      <!-- ★ NEW: Panel perbandingan side-by-side ★ -->
+      <div id="comparePanel" class="compare-panel hidden">
+        <div class="compare-input-wrap">
+          <label>Masukkan Nominal Pinjaman (Rp) untuk dibandingkan:</label>
+          <input type="number" id="compareNominal" placeholder="Contoh: 5000000" oninput="renderCompare()"/>
+        </div>
+        <div class="compare-grid" id="compareGrid">
+          <div class="compare-empty">Masukkan nominal di atas untuk melihat perbandingan</div>
+        </div>
+        <p class="disclaimer" style="margin-top:10px;text-align:center;">*Estimasi awal. Angka final ditentukan oleh Penaksir Pegadaian Cabang Mayang Mangurai.</p>
+      </div>
     </div>
 
-    <!-- INPUT SECTION -->
+    <!-- INPUT SECTION (per produk) -->
     <div id="inputSection" class="hidden">
       <button class="dt-back" onclick="goBack()">← Ganti Produk</button>
 
@@ -216,6 +230,21 @@
         <button class="tab-btn"        onclick="switchMargin(0.0053,this)">0.53% / Bln</button>
         <button class="tab-btn"        onclick="switchMargin(0.0039,this)">0.39% / Bln</button>
       </div>
+
+      <!-- ★ NEW: Filter Tenor ★ -->
+      <div class="tenor-filter-row">
+        <span class="tenor-filter-label">Tampilkan Tenor:</span>
+        <div class="tenor-filter-tabs">
+          <button class="tenor-tab active" onclick="setTenorFilter('all', this)">Semua</button>
+          <button class="tenor-tab" onclick="setTenorFilter(3,  this)">3 Bln</button>
+          <button class="tenor-tab" onclick="setTenorFilter(6,  this)">6 Bln</button>
+          <button class="tenor-tab" onclick="setTenorFilter(12, this)">12 Bln</button>
+          <button class="tenor-tab" onclick="setTenorFilter(18, this)">18 Bln</button>
+          <button class="tenor-tab" onclick="setTenorFilter(24, this)">24 Bln</button>
+          <button class="tenor-tab" onclick="setTenorFilter(36, this)">36 Bln</button>
+        </div>
+      </div>
+
       <div class="dp-row">
         <label>DP Tambahan (Rp):</label>
         <input type="text" id="dp-rupiah-input" placeholder="Kosongkan = pakai min 15%" oninput="handleDPInput(this.value)"/>
@@ -225,23 +254,23 @@
 
     <div class="table-wrap">
       <table class="sim-table">
-        <thead>
-          <tr>
-            <th>Denominasi</th>
-            <th>Total DP + Admin</th>
-            <th>Pokok Pinjaman</th>
-            <th>3 Bln</th>
-            <th>6 Bln</th>
-            <th>12 Bln</th>
-            <th>18 Bln</th>
-            <th>24 Bln</th>
-            <th>36 Bln</th>
-          </tr>
-        </thead>
+        <thead><tr id="simTableHeadRow"></tr></thead>
         <tbody id="simulation-table"></tbody>
       </table>
     </div>
     <p class="ce-note">*Simulasi awal. Harga emas dan angsuran final ditentukan oleh Pegadaian Cabang Mayang Mangurai.</p>
+
+    <!-- ★ NEW: Tombol Share WA + Mulai di Tring ★ -->
+    <div class="ce-action-row">
+      <button class="btn-share-wa" onclick="shareWhatsApp()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Share ke WhatsApp
+      </button>
+      <a class="btn-tring-cicil" href="https://play.google.com/store/apps/details?id=com.pegadaiandigital" target="_blank" rel="noopener">
+        <img src="https://assets-a1.kompasiana.com/items/album/2025/10/06/1-68e331adc925c446c6513752.png?t=o&v=770.png" alt="Tring" style="height:18px;object-fit:contain;vertical-align:middle;"/>
+        Mulai Cicil di Tring
+      </a>
+    </div>
   </div>
   <footer class="site-footer">
     <p><strong>Pegadaian Cabang Mayang Mangurai</strong> &nbsp;·&nbsp; Kota Jambi &nbsp;·&nbsp; <strong>SOLID DAN JUARA</strong></p>
